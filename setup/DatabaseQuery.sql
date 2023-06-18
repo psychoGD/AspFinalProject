@@ -1,4 +1,6 @@
-﻿
+﻿CREATE DATABASE SocialMedia
+GO
+USE SocialMedia
 
 CREATE TABLE Posts (
     Id INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
