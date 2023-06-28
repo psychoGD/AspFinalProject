@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace App.DataAccess.Concrete.EFEntityFramework
 {
-    internal class UserDal:EfEntityRepositoryBase<User,SocialMediaDBContext>,IUserDal
+    public class UserDal:EfEntityRepositoryBase<User,SocialMediaContext>,IUserDal
     {
     }
 }
