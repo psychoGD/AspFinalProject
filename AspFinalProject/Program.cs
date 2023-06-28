@@ -1,8 +1,28 @@
+using AspFinalProject.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+var conn = builder.Configuration.GetConnectionString("myconn");
+//builder.Services.AddDbContext<CustomIdentityDbContext>(opt =>
+//{
+//    opt.(conn)
+//});
+builder.Services.AddDbContext<CustomIdentityDbContext>(opt =>
+{
+    opt.UseSqlServer(conn);
+});
+
+
+builder.Services.AddIdentity<CustomIdentityUser, CustomIdentityRole>()
+    .AddEntityFrameworkStores<CustomIdentityDbContext>()
+    .AddDefaultTokenProviders();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -18,6 +38,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
