@@ -1,4 +1,5 @@
 using AspFinalProject.Entities;
+using AspFinalProject.Hub;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +8,16 @@ using System;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddSignalR();
+
+builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+{
+	builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
+
+
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession();
@@ -41,10 +52,19 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseCors("corsapp");
+
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoint =>
+{
+    endpoint.MapControllers();
+    endpoint.MapHub<MessageHub>("/offers");
+});
+
 
 app.UseSession();
 
